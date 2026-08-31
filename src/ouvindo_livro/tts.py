@@ -1,6 +1,5 @@
 from __future__ import annotations
 
-import shlex
 import subprocess
 from dataclasses import dataclass
 from pathlib import Path
@@ -97,10 +96,10 @@ def _build_narration_text(chapter: Chapter, max_chars: int) -> str:
 
 def _render_command(command: str, input_path: Path, output_path: Path, chapter: Chapter) -> str:
     replacements = {
-        "input": shlex.quote(str(input_path)),
-        "output": shlex.quote(str(output_path)),
-        "title": shlex.quote(chapter.title),
-        "slug": shlex.quote(chapter.slug),
+        "input": str(input_path),
+        "output": str(output_path),
+        "title": chapter.title,
+        "slug": chapter.slug,
         "index": f"{chapter.index:03d}",
     }
     rendered = command
@@ -120,5 +119,7 @@ Configure o `.env` com seu motor de TTS, por exemplo:
 TTS_COMMAND=python caminho/tts.py --input "{input}" --output "{output}"
 TTS_OUTPUT_EXTENSION=mp3
 ```
+
+Use aspas nos placeholders se seus caminhos puderem conter espacos.
 """
     write_text(audio_dir / "README_TTS_PENDENTE.md", content)
